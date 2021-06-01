@@ -1,7 +1,7 @@
 const Express = require('express');
 const router = Express.Router();
 const { LogModel } = require('../models');
-const middle = require('../middleware');
+const middleware = require('../middleware');
 
 //router.get('/', (req, res) => {
 //res.send('Hello!')
@@ -17,7 +17,7 @@ router.get('/', async(req, res) => {
     }
 })
                     //does it need validateJWT
-router.post("/log", validateJWT, async (req, res) => {
+router.post("/log", async (req, res) => {
     const {definition, description, results} = req.body.log;
     const{ id } = req.user;
     const logEntry = {

@@ -1,10 +1,10 @@
-const router = require("express").Router();
-
+const router = require('express').Router();
 const { UserModel } = require('../models');
-//const User = require("../models/user");
-const { UniqueConstraintError } = require("sequelize");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { UniqueConstraintError } = require("sequelize");
+const User = require("../models/user");
+
 
 router.post("/register", async (req,res) => {
 

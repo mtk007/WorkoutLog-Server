@@ -6,14 +6,14 @@ const dbConnection = require('./db');
 const controllers = require('./controllers');
 const middleware = require('./middleware');
 
-//app.use(Express.static(__dirname +'/public'))
+app.use(Express.static(__dirname +'/public'))
 // console.log(__dirname);
 // app.get('/', (req,res) => res.render('index'));
 // app.get('/log', (req, res) => res.send('I love working out!'));
 
 app.use(middleware.headers);
 app.use('/user', controllers.usercontroller);
-app.use('/log', controllers.workoutoutcontroller);
+app.use('/log', controllers.workoutcontroller);
 
 //app.use('/log', middleware.validateSession, controllers.workoutcontroller);  // validates ALL routes within the workout controller
 

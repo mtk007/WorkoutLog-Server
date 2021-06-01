@@ -1,6 +1,6 @@
 module.exports = {
 
-    workoutoutcontroller: require('./workoutcontroller'),
+    workoutcontroller: require('./workoutcontroller'),
     usercontroller: require('./usercontroller'),
 
 };
