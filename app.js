@@ -6,7 +6,7 @@ const dbConnection = require('./db');
 const controllers = require('./controllers');
 const middleware = require('./middleware');
 
-app.use(Express.static(__dirname +'/public'))
+//app.use(Express.static(__dirname +'/public'))
 // console.log(__dirname);
 // app.get('/', (req,res) => res.render('index'));
 // app.get('/log', (req, res) => res.send('I love working out!'));

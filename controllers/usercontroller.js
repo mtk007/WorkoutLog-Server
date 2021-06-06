@@ -2,22 +2,23 @@ const router = require('express').Router();
 const { UserModel } = require('../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { UniqueConstraintError } = require("sequelize");
-const User = require("../models/user");
+const { UniqueConstraintError } = require('sequelize/lib/errors');
+const User = require('../models/user');
 
 
-router.post("/register", async (req,res) => {
+router.post('/register', async (req,res) => {
 
-    const { username, passwordhash } = req.body.user;
+    const { username, passwordhash } = req.body;
 
     try {const newUser = await UserModel.create({
         username,
-        passwordhash: bcrypt.hashSync(passwordhash, 12)
-    })
+        passwordhash: bcrypt.hashSync(passwordhash, 13)
+    
+        })
             const token = jwt.sign(
               {id: newUser.id,},
               process.env.JWT_SECRET,
-              {expiresIn: 60 * 60 * 24 * 7}  
+              {expiresIn: 60 * 60 * 168}  
             )
      res.status(201).json({
          msg: 'User Registered',
@@ -39,51 +40,56 @@ router.post("/register", async (req,res) => {
 
 }),
 
-router.post('/login', async(req, res) => {
-    let { username, passwordhash } = req.body.user;
+router.post('/login', async(req,res) => {
+    let { username, passwordhash } = req.body;
+
 
     try {
-        let loginUser = await User.findOne({
-            where: { username: username,},
+        let loginUser = await UserModel.findOne({
+            where: {username: username,}
         })
 
         if(loginUser) {
 
-            let passwordComparison = await bcrypt.compare   
-            (passwordhash, loginUser.passwordhash);
+            let passwordComparison = await bcrypt.compare(passwordhash, loginUser.passwordhash);
 
-            if (passwordComparison) {
+            if(passwordComparison) {
 
                 let token = jwt.sign(
-
                     {id: loginUser.id},
-                        process.env.JWT_SECRET,
-                        {expireIn: 60 * 60 * 24 * 7}
+                    process.env.JWT_SECRET,
+                     {expiresIn: 60 * 60 * 168}
                 );
 
                 res.status(200).json({
                     user: loginUser,
-                    msg: "User successfully logged in!",
+                    msg: `User successfully logged in!`,
                     token
                 });
+
             } else {
 
                 res.status(401).json({
-                    msg: "Incorrect username or password"
+                    msg: `Incorrect email or password`
                 })
+
             }
 
-        } else {
+        }else {
 
             res.status(401).json({
-                msg: "Incorrect username or password"
+                msg: `Incorrect email or password`
             })
+
         }
+
+
     } catch (err) {
         res.status(500).json({
-            msg: "Error logging in!"
+            msg: `Error logging in!`
         })
     }
+
 });
 
-module.exports = router;
+module.exports=router;
